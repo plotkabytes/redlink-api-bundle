@@ -31,15 +31,13 @@ class Configuration implements ConfigurationInterface
                 ->requiresAtLeastOneElement()
                 ->prototype('array')
                 ->addDefaultsIfNotSet()
-
                     ->children()
-                        ->scalarNode('authorization_key')->cannotBeEmpty()->isRequired()->end()
+                        ->scalarNode('authorization_key')->defaultValue(null)->isRequired()->end()
                         ->scalarNode('application_key')->defaultValue(null)->end()
                         ->scalarNode('alias')->defaultValue(null)->end()
                         ->booleanNode('default')->defaultValue(false)->end()
                         ->scalarNode('http_client')->defaultValue(null)->end()
                     ->end()
-
                 ->end()
             ->end()
         ;

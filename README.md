@@ -1,6 +1,6 @@
 # Vercom API Symfony Bundle
 
-![Build and tests](https://github.com/plotkabytes/vercom-api-php-client/actions/workflows/ci.yml/badge.svg)
+![Build and tests](https://github.com/plotkabytes/vercom-api-bundle/actions/workflows/ci.yml/badge.svg)
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/plotkabytes/vercom-api-php-client/blob/main/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
@@ -18,17 +18,17 @@ of the Composer documentation.
 
 ### Applications that use Symfony Flex
 
-Open a command console, enter your project directory and execute:
-
-```console
-$ composer require plotkabytes/vercom-api-php-client plotkabytes/vercom-api-symfony-bundle
-```
-
 After getting composer you have to install PSR HTTP client implementation (if you dont have one already - 
 for example [Guzzle](https://github.com/guzzle/guzzle) / [Buzz](https://github.com/kriswallsmith/Buzz)):
 
 ```console
 $ composer require guzzlehttp/guzzle
+```
+
+Next you should install this package with usage of composer:
+
+```console
+$ composer require plotkabytes/vercom-api-php-client plotkabytes/vercom-api-symfony-bundle
 ```
 
 ### Applications that don't use Symfony Flex
