@@ -1,0 +1,69 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  run:
+
+    runs-on: ${{ matrix.operating-system }}
+    name: PHP ${{ matrix.php-versions }} and Symfony ${{ matrix.symfony }} Test on ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        include:
+          -
+            operating-system: [ubuntu-latest]
+            php-versions: 7.2
+            symfony: '5.3.*'
+          -
+            operating-system: [ubuntu-latest]
+            php-versions: 7.3
+            symfony: '5.3.*'
+          -
+            operating-system: [ ubuntu-latest ]
+            php-versions: 7.4
+            symfony: '5.3.*'
+          -
+            operating-system: [ ubuntu-latest ]
+            php-versions: 8.0
+            symfony: '^5.3'
+          -
+            operating-system: [ ubuntu-latest ]
+            php-versions: 8.1
+            symfony: '^5.3'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: flex
+
+      - name: Set the Symfony version
+        id: step_one
+        run: |
+          echo "SYMFONY_REQUIRE=${{ matrix.symfony }}" >> $GITHUB_ENV
+
+      - name: Install dependencies
+        uses: php-actions/composer@v6
+        with:
+          ssh_key: ${{ secrets.ssh_key }}
+          ssh_key_pub: ${{ secrets.ssh_key_pub }}
+          php_version: ${{ matrix.php-versions }}
+          command: update
+
+      - name: PHPUnit Tests
+        uses: php-actions/phpunit@v3
+        with:
+          bootstrap: vendor/autoload.php
+          configuration: phpunit.xml.dist
+          args: --coverage-text
+
+      - name: PHPStan
+        uses: php-actions/phpstan@v3
+        with:
+          configuration: phpstan.neon.dist
+
+      #- name: Auto format check # php-cs-fixer
+      #  run: composer auto-format
