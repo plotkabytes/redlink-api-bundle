@@ -51,15 +51,23 @@ class PlotkabytesVercomApiExtension extends Extension
      */
     private function addClients(array $clients, ContainerBuilder $container) : void
     {
+        if(count($clients) == 0)
+        {
+            $this->createClient(
+                "default",
+                "HERE_INSERT_AUTHORIZATION_KEY",
+                "HERE_INSERT_APPLICATION_KEY",
+                null,
+                null,
+                $container
+            );
+
+            return;
+        }
 
         $defaultSelected = false;
 
         foreach ($clients as $name => $client) {
-
-            if (true === $client['default']) {
-                $this->setDefaultClient((string)$name, $container);
-                $defaultSelected = true;
-            }
 
             $this->createClient(
                 $name,
@@ -69,6 +77,11 @@ class PlotkabytesVercomApiExtension extends Extension
                 $client['http_client'],
                 $container
             );
+
+            if (true === $client['default'] && false === $defaultSelected) {
+                $this->setDefaultClient((string)$name, $container);
+                $defaultSelected = true;
+            }
         }
 
         if (!$defaultSelected) {
@@ -86,7 +99,6 @@ class PlotkabytesVercomApiExtension extends Extension
     private function setDefaultClient(string $name, ContainerBuilder $container): void
     {
         $container->setAlias(self::PATH_ALIAS . '.client.default', sprintf('%s.client.%s', self::PATH_ALIAS, $name));
-        $container->setAlias(self::PATH_ALIAS, self::PATH_ALIAS . '.client.default');
         $container->setAlias(DefaultClient::class, self::PATH_ALIAS . '.client.default');
     }
 
