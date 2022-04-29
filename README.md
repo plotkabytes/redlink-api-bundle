@@ -28,7 +28,7 @@ $ composer require guzzlehttp/guzzle
 Next you should install this package with usage of composer:
 
 ```console
-$ composer require plotkabytes/vercom-api-php-client plotkabytes/vercom-api-symfony-bundle
+$ composer require --no-scripts plotkabytes/vercom-api-php-client plotkabytes/vercom-api-symfony-bundle --no-scripts
 ```
 
 ### Applications that don't use Symfony Flex
@@ -53,38 +53,44 @@ return [
 
 ### Step 3: Configure the Bundle
 
-Then, configure the bundle by adding following configuration to the `app/config/config.yml` file:
+Then, configure the bundle by adding following configuration to the `config/packages/plotkabytes_vercom_api.yaml` file:
 
 ```yml
+# config/packages/plotkabytes_vercom_api.yaml
 plotkabytes_vercom_api:
-  
   clients:
-    
     client_name:
       authorization_key: HERE_INSERT_AUTHORIZATION_KEY
       application_key: HERE_INSERT_APPLICATION_KEY
       alias: OPTIONAL_CLIENT_ALIAS
       default: false
-      http_client: HTTP_CLIENT_SERVICE_ID
-      
-    other_client_name:
-      authorization_key: HERE_INSERT_AUTHORIZATION_KEY
-      application_key: HERE_INSERT_APPLICATION_KEY
-      alias: OPTIONAL_CLIENT_ALIAS
-      default: true
-      http_client: HTTP_CLIENT_SERVICE_ID
 ```
 
-### Step 4: Use bundle
+### Step 4: Clear cache
 
-With manual wiring the arguments:
+After bundle configuration may be required to clear symfony cache.
+
+```console
+$ bin/console cache:clear
+```
+
+### Step 5: Register service
+
+Inside `config/services.yaml` add following:
+
 ```yml
+# config/services.yaml
 services:
+  
+    # ...
+    # Other services
+    # ...
+  
     App\Controller\DefaultController:
         arguments: {$client: '@plotkabytes_vercom_api.client.default'}
 ```
 
-or by dependency injection:
+### Step 6: Use bundle
 
 ```php
 
@@ -98,7 +104,7 @@ class DefaultController extends AbstractController {
 
     private $client;
 
-    public __construct(DefaultClient $client) {
+    public function __construct(DefaultClient $client) {
         $this->client = $client;
     }
 }
