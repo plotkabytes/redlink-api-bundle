@@ -98,6 +98,7 @@ class PlotkabytesVercomApiExtension extends Extension
      */
     private function setDefaultClient(string $name, ContainerBuilder $container): void
     {
+        $container->setAlias(self::PATH_ALIAS, self::PATH_ALIAS . '.client.default');
         $container->setAlias(self::PATH_ALIAS . '.client.default', sprintf('%s.client.%s', self::PATH_ALIAS, $name));
         $container->setAlias(DefaultClient::class, self::PATH_ALIAS . '.client.default');
     }
