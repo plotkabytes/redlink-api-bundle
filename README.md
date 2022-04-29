@@ -8,7 +8,7 @@ This repository contains simple symfony bundle for [vercom-api-php-client](https
 
 ## Requirements
 
-This version supports [PHP](https://php.net) >= 7.2 and [Symfony](https://symfony.com/) >= 5.3.0.
+This version supports [PHP](https://php.net) >= 7.2 and [Symfony](https://symfony.com/) >= 4.4.0.
 
 ## Installation
 
