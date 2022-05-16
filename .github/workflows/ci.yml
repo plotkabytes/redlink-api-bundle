@@ -43,7 +43,6 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: flex
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set the Symfony version
         id: step_one
@@ -57,7 +56,6 @@ jobs:
           ssh_key_pub: ${{ secrets.ssh_key_pub }}
           php_version: ${{ matrix.php-versions }}
           command: update
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: PHPUnit Tests
         uses: php-actions/phpunit@v3
@@ -65,12 +63,11 @@ jobs:
           bootstrap: vendor/autoload.php
           configuration: phpunit.xml.dist
           args: --coverage-text
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: PHPStan
         uses: php-actions/phpstan@v3
         with:
           configuration: phpstan.neon.dist
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
       #- name: Auto format check # php-cs-fixer
       #  run: composer auto-format
